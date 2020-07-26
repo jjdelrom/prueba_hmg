@@ -11,11 +11,38 @@ security:
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username_email
+            # id: fos_user.user_provider.username
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        oauth_token:
+            pattern: ^/oauth/v2/token
+            security: false
+
+        # Add this firewall only in the Authorization code flow
+        oauth_authorize:
+            pattern: ^/oauth/v2/auth
+            form_login:
+                provider: fos_userbundle
+                check_path: /oauth/v2/auth_login_check
+                login_path: /oauth/v2/auth_login
+            anonymous: true
+
+        api_doc:
+            pattern: ^/api/doc
+            fos_oauth: false
+            stateless: true
+            anonymous: true
+
+        api:
+            pattern: ^/api
+            fos_oauth: true
+            stateless: true
+            anonymous: false            
+
         main:
             pattern: ^/
             form_login:
@@ -25,11 +52,16 @@ security:
             # logout: true
             logout: true
             logout_on_user_change: true
+            fos_oauth: false
             anonymous: true
 
     # Control de acceso
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/oauth/v2/auth_login$, role: IS_AUTHENTICATED_ANONYMOUSLY } # Add this only in the Authorization code flow
+        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
