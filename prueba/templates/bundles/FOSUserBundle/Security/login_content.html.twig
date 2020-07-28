@@ -1,25 +1,83 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Listado HMG{% endblock %}
+{% block stylesheets %}
+    {# {{ parent() }} #}
+    {{ include('app/includes/css_includes.html.twig') }}
+
+{% endblock %}
+{% block body %}
+
+    {{ include('app/modules/navbar.html.twig') }}
+    {{ include('app/modules/header.html.twig') }}
+
+<div class="container" style="padding-top: 50px; padding-bottom: 50px">
+    <div class="text-center"><h2>- LOGGIN / LOGOUT-</h2></div>
+
+
+        <div>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                <a class="message-log" href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a>
+            {% else %}
+                <a class="message-log" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+            {% endif %}
+        </div>
+
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
+        <div>
+            {% block fos_user_content %}
+            {% endblock fos_user_content %}
+        </div>
+
+
+
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% if error %}
 {# {% if error is defined %} #}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    <div class="error-log">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
 
-{# <form action="{{ path("fos_user_security_check") }}" method="post"> #}
 <form action="{{ path("auth_login_check") }}" method="post">
     {% if csrf_token %}
-    {# {% if csrf_token is defined %} #}
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-    {% endif %}
+    {% endif %}    
+  <div class="form-group">
 
     <label for="username">{{ 'security.login.username'|trans }}</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />
-
+    <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />    
+    <br>
     <label for="password">{{ 'security.login.password'|trans }}</label>
-    <input type="password" id="password" name="_password" required="required" autocomplete="current-password" />
-
+    <input type="password" class="form-control" id="password" name="_password" required="required" autocomplete="current-password" />
+    <br>
     <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
     <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
-
-    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+    <br>
+    <button class="btn btn-dark" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}">{{ 'security.login.submit'|trans }}</button>
+  </div>
 </form>
+</div>
+
+    {{ include('app/modules/contact.html.twig') }}
+    {{ include('app/modules/footer.html.twig') }}
+
+
+
+{% block javascripts %}
+    {{ include('app/includes/js_includes.html.twig') }} 
+
+{% endblock javascripts %}
+
+{% endblock %}

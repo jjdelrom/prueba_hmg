@@ -11156,4 +11156,16 @@ form .row:first-child .floating-label-form-group {
 .btn-social {
     margin-bottom: .5rem
 }
-  
+
+.error-log{
+    color: red;
+    font-size: 24px;
+}  
+.message-log{
+    color: #2C3E50;
+}
+
+.message-log:hover {
+    color: red;
+    /*text-decoration: underline*/
+}
