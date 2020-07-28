@@ -17,6 +17,7 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+    protected $commentary;
 
     public function __construct()
     {
@@ -26,5 +27,14 @@ class User extends BaseUser
     public function getId(): ?int
     {
         return $this->id;
+    }   
+
+    public function getCommentary(): ?String
+    {
+        return $this->commentary;
     }    
+    public function setCommentary($commentary)
+    {
+        $this->commentary = $commentary;
+    }       
 }

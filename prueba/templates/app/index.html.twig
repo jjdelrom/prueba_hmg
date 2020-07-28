@@ -15,18 +15,6 @@
     {{ include('app/modules/footer.html.twig') }}
 
 
-{#     <a href="{{ path('auth_login') }}">
-        LOGIN
-    </a>
-
-
-    <a href="{{ path('fos_user_security_logout') }}">
-        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-    </a>
-
-#}
-
-
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
         {# <a href="{{ path('fos_user_security_logout') }}"> #}
@@ -40,23 +28,22 @@
 
 
 {#      {% if is_granted('ROLE_MANAGER') == false %}
-                  my message 
+                  
  {% endif %} #}
 
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-    {{ app.user.username }}
+    {# {{ app.user.username }} #}
 
-    my message
  {% endif %}
 
 {% if csrfToken %}
-    {{ csrfToken }}
+    {# {{ csrfToken }} #}
 {% endif %}
 
 
-{% block fos_user_content %}
-    {# {{ include('@FOSUser/Security/login.html.twig') }} #}
-{% endblock fos_user_content %}
+{# {% block fos_user_content %}
+    {{ include('@FOSUser/Security/login.html.twig') }}
+{% endblock fos_user_content %} #}
 
 
 {% block javascripts %}
