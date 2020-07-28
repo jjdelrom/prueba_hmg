@@ -1,0 +1,50 @@
+<section class="page-section options" id="options">
+    <div class="container">
+        <!-- options Section Heading-->
+        <div class="text-center">
+            <h2 class="page-section-heading text-secondary mb-0 d-inline-block">¿Que desea hacer?</h2>
+        </div>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- options Grid Items-->
+        <div class="row justify-content-center">
+            <!-- options Items-->
+            <div class="col-md-6 col-lg-4 mb-5">                
+                    <div class="options-item mx-auto" id="listado">
+                        <h3 class="text-center">Listado</h3>
+                        <a href="/oauth/v2/auth/listado">
+                            <div class="options-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                <div class="options-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                            </div><img class="img-fluid" src="{{ asset('assets/img/listado.jpg') }}" alt="Listado" width="304" height="236"/>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="col-md-6 col-lg-4 mb-5">                        
+                <div class="options-item mx-auto" id="login">
+                    <h3 class="text-center">Login/Logout</h3>
+                    <a href="{{ path('auth_login') }}">
+                        <div class="options-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                            <div class="options-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                        </div><img class="img-fluid" src="{{ asset('assets/img/login-logout.png') }}" alt="Login-Logout" width="304" height="236"/>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-5">
+                <div class="options-item mx-auto" id="documentacion">
+                    <h3 class="text-center">Doc. API</h3>  
+                    <a href="/api/doc">                          
+                        <div class="options-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                            <div class="options-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                        </div><img class="img-fluid" src="{{ asset('assets/img/doc-api.jpg') }}" alt="doc-api" width="304" height="236"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>

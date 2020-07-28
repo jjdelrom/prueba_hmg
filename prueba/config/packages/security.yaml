@@ -25,10 +25,12 @@ security:
         # Add this firewall only in the Authorization code flow
         oauth_authorize:
             pattern: ^/oauth/v2/auth
-            form_login:
+            form_login:                
                 provider: fos_userbundle
                 check_path: /oauth/v2/auth_login_check
                 login_path: /oauth/v2/auth_login
+                default_target_path: /oauth/v2/auth/listado
+
             anonymous: true
 
         api_doc:
@@ -57,11 +59,12 @@ security:
 
     # Control de acceso
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         # - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+        # - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/oauth/v2/auth_login$, role: IS_AUTHENTICATED_ANONYMOUSLY } # Add this only in the Authorization code flow
-        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/doc, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/listado, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, role: IS_AUTHENTICATED_FULLY }

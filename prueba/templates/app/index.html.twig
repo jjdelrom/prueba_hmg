@@ -1,0 +1,67 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Home HMG{% endblock %}
+{% block stylesheets %}
+    {# {{ parent() }} #}
+    {{ include('app/includes/css_includes.html.twig') }}
+
+{% endblock %}
+{% block body %}
+
+    {{ include('app/modules/navbar.html.twig') }}
+    {{ include('app/modules/header.html.twig') }}
+    {{ include('app/modules/options.html.twig') }}
+    {{ include('app/modules/contact.html.twig') }}
+    {{ include('app/modules/footer.html.twig') }}
+
+
+{#     <a href="{{ path('auth_login') }}">
+        LOGIN
+    </a>
+
+
+    <a href="{{ path('fos_user_security_logout') }}">
+        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+    </a>
+
+#}
+
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+        {# <a href="{{ path('fos_user_security_logout') }}"> #}
+        {# <a href="{{ path('auth_login') }}"> #}
+        <a href="{{ path('login_path') }}">
+            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+        </a>
+    {% else %}
+        <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+    {% endif %}
+
+
+{#      {% if is_granted('ROLE_MANAGER') == false %}
+                  my message 
+ {% endif %} #}
+
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    {{ app.user.username }}
+
+    my message
+ {% endif %}
+
+{% if csrfToken %}
+    {{ csrfToken }}
+{% endif %}
+
+
+{% block fos_user_content %}
+    {# {{ include('@FOSUser/Security/login.html.twig') }} #}
+{% endblock fos_user_content %}
+
+
+{% block javascripts %}
+    {{ include('app/includes/js_includes.html.twig') }} 
+{% endblock javascripts %}
+
+{% endblock %}
+{# title, stylesheets, body, javascripts #}

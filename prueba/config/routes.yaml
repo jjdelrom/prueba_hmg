@@ -1,6 +1,18 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+   path: /
+   controller: App\Controller\AppController::indexAction
+
+editar:
+   path: /oauth/v2/auth/editar/{id}
+   controller: App\Controller\AppController::editarAction
+   requirements:
+        id: \d+
+
+borrar:
+   path: /oauth/v2/auth/borrar/{id}
+   controller: App\Controller\AppController::borrarAction
+   requirements:
+        id: \d+        
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
@@ -13,6 +25,8 @@ fos_oauth_server_token:
 fos_oauth_server_authorize:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
 
-
+listado:
+   path: /oauth/v2/auth/listado
+   controller: App\Controller\AppController::listadoAction  
 # fos_user:
 #     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
