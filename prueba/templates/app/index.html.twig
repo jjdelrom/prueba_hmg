@@ -15,30 +15,30 @@
     {{ include('app/modules/footer.html.twig') }}
 
 
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+{#     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-        {# <a href="{{ path('fos_user_security_logout') }}"> #}
-        {# <a href="{{ path('auth_login') }}"> #}
+        <a href="{{ path('fos_user_security_logout') }}">
+        <a href="{{ path('auth_login') }}">
         <a href="{{ path('login_path') }}">
             {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
         </a>
     {% else %}
         <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
-    {% endif %}
+    {% endif %} #}
 
 
 {#      {% if is_granted('ROLE_MANAGER') == false %}
                   
  {% endif %} #}
 
-{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-    {# {{ app.user.username }} #}
+{# {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    {{ app.user.username }}
 
- {% endif %}
+ {% endif %} #}
 
-{% if csrfToken %}
-    {# {{ csrfToken }} #}
-{% endif %}
+{# {% if csrfToken %}
+    {{ csrfToken }}
+{% endif %} #}
 
 
 {# {% block fos_user_content %}
@@ -46,9 +46,9 @@
 {% endblock fos_user_content %} #}
 
 
-{% block javascripts %}
-    {{ include('app/includes/js_includes.html.twig') }} 
-{% endblock javascripts %}
+    {% block javascripts %}
+        {{ include('app/includes/js_includes.html.twig') }} 
+    {% endblock javascripts %}
 
 {% endblock %}
 {# title, stylesheets, body, javascripts #}

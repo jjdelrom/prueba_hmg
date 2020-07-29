@@ -64,38 +64,19 @@ $csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')
 
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $users = $userRepository->getAllUsers(0, 10);
-
-        // echo '<pre>'; print_r($users); echo '</pre>';
-        
+       
         $loginPath = $this->generateUrl('auth_login_check');
 
-        return $this->render('app/index.html.twig', [
-            'csrfToken' => $csrfToken,
-            'last_username' => '',
-            'promotions' => ['...', '...'],
-        ]);
-        // return $this->render('@FOSUser/Security/login.html.twig', array(
-        //     'last_username' => 'lastUsername',
-        //     'error' => 'error',
-        //     'csrf_token' => 'csrfToken',
-        //     'security_check_path' => 'securityCheckPath',
-        // ));
+        return $this->render('app/index.html.twig');
     }
+
 
     public function listadoAction(Request $request, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $user = $this->getUser();
-         // echo '<pre>'; print_r($user); echo '</pre>';
-// die();
-
-        $access1 = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
-    // echo "string ".$access1;
-
-    // $access2 = $authorizationChecker->isGranted(new Expression(
-    //     'is_remember_me() or is_fully_authenticated()'
-    // ));
+        // $user = $this->getUser();
+        // $access = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
 
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $users = $userRepository->getAllUsers(0, 50);
@@ -108,30 +89,18 @@ $csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')
      
     public function editarAction($id, Request $request, AuthorizationCheckerInterface $authorizationChecker)
     {
-        echo $id;
-
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        //$access1 = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
+        // $access2 = $authorizationChecker->isGranted(new Expression(
+        //     'is_remember_me() or is_fully_authenticated()'
+        // ));
+        // 
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $users = $userRepository->getAllUsers(0, 50);
         
         $userEdit = $this->getDoctrine()->getRepository(User::class)->find($id);
 
-        echo '<pre>'; print_r($userEdit); echo '</pre>';
-        die("SSSSSSS");
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         $user = $this->getUser();
-         // echo '<pre>'; print_r($user); echo '</pre>';
-// die();
-
-        $access1 = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
-    // echo "string ".$access1;
-
-    // $access2 = $authorizationChecker->isGranted(new Expression(
-    //     'is_remember_me() or is_fully_authenticated()'
-    // ));
-
-        $userRepository = $this->getDoctrine()->getRepository(User::class);
-        $users = $userRepository->getAllUsers(0, 50);
 
         return $this->render('app/listado.html.twig', [
                     'users' => $users
@@ -185,17 +154,5 @@ $csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')
                 ]);
 
     }
-
-    // public function getAllUsersAction(Request $request)
-    // {
-    //     $offset = $request->query->get('offset', 0);
-    //     $limit = $request->query->get('limit', 10);
-
-    //      @var UserRepository $userRepository 
-    //     $userRepository = $this->getDoctrine()->getRepository(User::class);
-    //     $users = $userRepository->getAllUsers($offset, $limit);
-
-    //     return $this->view($users);
-    // }
 
 }
