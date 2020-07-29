@@ -18,6 +18,12 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 
 
+// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use Symfony\Component\Form\Extension\Core\Type\{TextType,ButtonType,EmailType,HiddenType,PasswordType,TextareaType,SubmitType,NumberType,DateType,MoneyType,BirthdayType,ChoiceType};
+
+
 class AppController extends AbstractController
 {
 
@@ -60,7 +66,7 @@ class AppController extends AbstractController
         
 // echo '<pre>'; print_r($this->denyAccessUnlessGranted('ROLE_ADMIN')); echo '</pre>';        
 
-$csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')->getValue() : null;
+        $csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')->getValue() : null;
 
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $users = $userRepository->getAllUsers(0, 10);
@@ -86,7 +92,9 @@ $csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')
                 ]);
 
     }
-     
+  
+
+
     public function editarAction($id, Request $request, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -94,21 +102,56 @@ $csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')
         // $access2 = $authorizationChecker->isGranted(new Expression(
         //     'is_remember_me() or is_fully_authenticated()'
         // ));
-        // 
-        $userRepository = $this->getDoctrine()->getRepository(User::class);
-        $users = $userRepository->getAllUsers(0, 50);
-        
+
         $userEdit = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $mensaje = '';
+        $form = $this->createFormBuilder($userEdit)
+            ->add('username', TextType::class)
+            ->add('usernamecanonical', TextType::class)
+            ->add('email', TextType::class)
+            ->add('emailcanonical', TextType::class)
+            // ->add('enabled', NumberType::class)
+            ->add('enabled', ChoiceType::class, [
+                'choices'  => [
+                    'Yes' => true,
+                    'No' => false,
+                ],
+            ])
+            ->add('save', SubmitType::class, array('label' => 'Editar Usuario'))
+            ->getForm();
 
-        $user = $this->getUser();
+        $form->handleRequest($request);
 
-        return $this->render('app/listado.html.twig', [
-                    'users' => $users
-                ]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $m = $this->getDoctrine()->getManager();
+
+            $data = $form->getData();
+            $userEdit = $data;
+            $m->persist($userEdit);
+            $m->flush();
+            $mensaje = 'Usuario editado corréctamente';
+        }
+
+
+        return $this->render('app/editar.html.twig', array(
+            'form' => $form->createView(), 'mensaje' => $mensaje
+        ));
+
+
+        // $userRepository = $this->getDoctrine()->getRepository(User::class);
+        // $users = $userRepository->getAllUsers(0, 50);
+        
+        // $userEdit = $this->getDoctrine()->getRepository(User::class)->find($id);
+
+        // $user = $this->getUser();
+
+        // return $this->render('app/listado.html.twig', [
+        //             'users' => $users
+        //         ]);
 
     }
 
-    public function borrarAction(/*UserInterface $user,*/ $id, Request $request, AuthorizationCheckerInterface $authorizationChecker)
+    public function borrarAction($id, Request $request, AuthorizationCheckerInterface $authorizationChecker)
     {   
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -124,15 +167,12 @@ $csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')
         $m = $this->getDoctrine()->getManager();
         $m->remove($userDelete);
         $m->flush();
-                    $this->addFlash('success', 'Registro eliminado correctamente' );
-
-    
+   
         // $this->objectManager->remove($user);
         // $this->objectManager->flush();
     
 
-        echo $id;
-        die("SSSSSSS");
+
         
 
         $user = $this->getUser();
@@ -154,5 +194,11 @@ $csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')
                 ]);
 
     }
+
+    public function registrarAction()
+    {  
+        return $this->render('app/registrar.html.twig');
+    }
+
 
 }

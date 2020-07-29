@@ -1,0 +1,84 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Editar HMG{% endblock %}
+{% block stylesheets %}
+    {# {{ parent() }} #}
+    {{ include('app/includes/css_includes.html.twig') }}
+
+{% endblock %}
+{% block body %}
+
+    {{ include('app/modules/navbar.html.twig') }}
+    {{ include('app/modules/header.html.twig') }}
+    {# {{ include('app/modules/options.html.twig') }} #}
+{# 
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }} #}
+
+    <div class="container">
+        <div class="row" style="padding-top: 50px;">
+            <div class="col-md-12 "> {# col-md-offset-2 #}
+                {% if mensaje %}
+                    <div class="alert alert-success" role="alert">
+                      <a href="#" class="alert-link">{{ mensaje }}</a>
+                    </div>
+                {% endif %}
+                <div class="text-center"><h2>Editar Usuario</h2> </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                    {{ form_start(form, { 'enctype':"multipart/form-data",  'attr' : {'role' : 'form'} }) }}
+                        <div class="form-group">
+                            {{ form_label(form.username)}}
+                             {{ form_widget(form.username, { 'attr': {'class': 'form-control'} }) }}
+                            <span class="text-danger">{{ form_errors(form.username)}}</span>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.usernamecanonical)}}
+                            {{ form_widget(form.usernamecanonical, { 'attr': {'class': 'form-control'} }) }}
+                            <span class="text-danger">{{ form_errors(form.usernamecanonical)}}</span>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.email)}}
+                            {{ form_widget(form.email, { 'attr': {'class': 'form-control'} }) }}
+                            <span class="text-danger">{{ form_errors(form.email)}}</span>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.emailcanonical)}}
+                            {{ form_widget(form.emailcanonical, { 'attr': {'class': 'form-control'} }) }}
+                            <span class="text-danger">{{ form_errors(form.emailcanonical)}}</span>
+                        </div>      
+                        <div class="form-group">
+                            {{ form_label(form.enabled)}}
+                            {{ form_widget(form.enabled, { 'attr': {'class': 'form-control'} }) }}
+                            <span class="text-danger">{{ form_errors(form.enabled)}}</span>
+                        </div>                                                                    
+{#                         <div class="form-group">
+                            {{ form_label(form.telefono)}}
+                             {{ form_widget(form.telefono, { 'attr': {'class': 'form-control'} }) }}
+                            <span class="text-danger">{{ form_errors(form.telefono)}}</span>
+                        </div> #}
+                    <!--  Aceptar y Reset en la misma línea  -->
+                    <div class="btn-toolbar" role="toolbar">
+                      <div class="btn-group">
+                        <div class="btn pull-left">
+                             {{ form_widget(form.save)}}
+                            <span class="text-danger">{{ form_errors(form)}}</span>
+                        </div>
+                      </div>
+                    </div><!-- # FIN Aceptar y Reset -->
+                        {{ form_end(form) }}
+                <!--}-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ include('app/modules/contact.html.twig') }}
+    {{ include('app/modules/footer.html.twig') }}
+
+
+    {{ include('app/includes/js_includes.html.twig') }} 
+
+{% endblock %}

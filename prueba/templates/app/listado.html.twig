@@ -18,7 +18,7 @@
 </style>
 {% endblock %}
 {% block body %}
-        <div class="loader"></div>
+    <div class="loader"></div>
 
 
     {{ include('app/modules/navbar.html.twig') }}
@@ -32,7 +32,6 @@
 
 <div class="container" style="padding-top: 50px; padding-bottom: 50px">
     <div class="text-center"><h2>LISTADO DE USUARIOS</h2></div>
-
     
     <div class="row options" id="options">
         <div class="table-responsive" style="font-size: 0.9rem;">
@@ -63,9 +62,12 @@
                                     <a href="{{ path('editar', {'id': user.id|e}) }}">
                                         <button class="btn"><i class="fas fa-pencil-alt"></i></button>
                                     </a>
-                                    <a href="{{ path('borrar', {'id': user.id|e}) }}">                                 
-                                        <button class="btn"><i class="fas fa-trash-alt" style='color:red;margin-left:15px '></i> </button>  
+                                    <a href="#" class="borrar" id='{{ user.id|e }}'>          {#  {{ path('borrar', {'id': user.id|e}) }}   #}                     
+                                        <button class="btn" data-toggle="modal" data-target="#myModal"><i class="fas fa-trash-alt" style='color:red;margin-left:10px '></i> </button>  
                                     </a>  
+                                    <a href="/register/">       
+                                        <button class="btn"><i class="fas fa-plus" style='color:green;margin-left:10px '></i> </button>  
+                                    </a>                                          
                                 </div>                              
                             </td>
                             <td>{{ user.username|e }}</td>
@@ -90,19 +92,50 @@
     </div>
 </div>
 
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
 
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Eliminar usuario</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
 
+          <!-- Modal body -->
+          <div class="modal-body text-center">
+            <h4 id="mensaje-modal"></h4>
+            
+          </div>
 
-    {# {{ include('app/modules/options.html.twig') }} #}
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-dark aceptar-borrado" data-dismiss="modal">Aceptar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     {{ include('app/modules/contact.html.twig') }}
     {{ include('app/modules/footer.html.twig') }}
 
 
-
-{% block javascripts %}
     {{ include('app/includes/js_includes.html.twig') }} 
     <script src="{{ asset('libs/datatables/datatables.min.js') }}"></script>
- {#   <script src="{{ asset('libs/bootstrap-all/bootstrap.min.js') }}"></script> #}
+    <script>
+
+        if (typeof id !== 'undefined') { let id; }    
+        $( ".borrar" ).click(function(e) {
+            id = $(this).attr('id');
+            $('#mensaje-modal').html('¿Está seguro que quiere eliminar el usuario con id '+id+'?');
+            $( ".aceptar-borrado" ).click(function() {
+                window.location.href = "/oauth/v2/auth/borrar/"+id;
+            });
+        });    
+    </script>
 
     <script>
    
@@ -143,7 +176,6 @@ table = $('#tabla').DataTable({
     } );
 
 </script>
-    </script>
-{% endblock javascripts %}
+
 
 {% endblock %}
