@@ -64,46 +64,6 @@ class SecurityController extends AbstractController
         ));
     }
 
-
-    /**
-     * @Route("/login", name="login")
-     * @param Request $request
-     * @return Response
-     */
-    public function login2Action(Request $request)
-    {
-        $session = $request->getSession();
-
-        $authErrorKey = Security::AUTHENTICATION_ERROR;
-        $lastUsernameKey = Security::LAST_USERNAME;
-
-        if ($request->attributes->has($authErrorKey)) {
-            $error = $request->attributes->get($authErrorKey);
-        } elseif (null !== $session && $session->has($authErrorKey)) {
-            $error = $session->get($authErrorKey);
-            $session->remove($authErrorKey);
-        } else {
-            $error = null;
-        }
-
-        if (!$error instanceof AuthenticationException) {
-            $error = null;
-        }
-
-        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
-
-        $csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')->getValue() : null;
-
-        $securityCheckPath = $this->generateUrl('auth_login_check');
-
-        return $this->render('@FOSUser/Security/login.html.twig', array(
-            'last_username' => $lastUsername,
-            'error' => $error,
-            'csrf_token' => $csrfToken,
-            'security_check_path' => $securityCheckPath,
-        ));
-    }
-
     /**
      * @Route("/oauth/v2/auth_login_check", name="auth_login_check")
      * @param Request $request

@@ -16,9 +16,6 @@ use Symfony\Component\ExpressionLanguage\Expression;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-
-
-// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\{TextType,ButtonType,EmailType,HiddenType,PasswordType,TextareaType,SubmitType,NumberType,DateType,MoneyType,BirthdayType,ChoiceType};
@@ -41,49 +38,17 @@ class AppController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        // if(isset($_SESSION)){
-        //     $session = $_SESSION;
-        //     echo '<pre>'; print_r($session); echo '</pre>';            
-        // }
-
-        // $session = $request->getSession();
-        // echo '<pre>'; print_r($session); echo '</pre>';
-
- // getUser() isGranted($attributes, $subject = null): bool getToken(): ?TokenInterface   IS_AUTHENTICATED_FULLY
-// $this->token_storage->getToken()->getUser();
-// echo '<pre>'; print_r($this->token_storage->getToken()->getUser()); echo '</pre>';
-       // if (false === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-       //      throw new AccessDeniedException();
-       //  }
-        // 
-        
-        // $authErrorKey = Security::AUTHENTICATION_ERROR;
-        // $lastUsernameKey = Security::LAST_USERNAME;
-
-        // if(isGranted('IS_AUTHENTICATED_FULLY')){
-        //     echo '<pre>'; print_r(Security::getUser()); echo '</pre>';
-        // }
-        
-// echo '<pre>'; print_r($this->denyAccessUnlessGranted('ROLE_ADMIN')); echo '</pre>';        
-
-        $csrfToken = $this->tokenManager ? $this->tokenManager->getToken('authenticate')->getValue() : null;
-
-        $userRepository = $this->getDoctrine()->getRepository(User::class);
-        $users = $userRepository->getAllUsers(0, 10);
-       
-        $loginPath = $this->generateUrl('auth_login_check');
-
         return $this->render('app/index.html.twig');
     }
 
-
-    public function listadoAction(Request $request, AuthorizationCheckerInterface $authorizationChecker)
+    /*
+     * Muestra un listado de usuarios siempre y cuando se haya logado.
+     * La ruta esta en routes.yaml
+     * @return Render view
+     */
+    public function listadoAction()
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        // $user = $this->getUser();
-        // $access = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
-
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $users = $userRepository->getAllUsers(0, 50);
 
@@ -93,15 +58,15 @@ class AppController extends AbstractController
 
     }
   
-
-
-    public function editarAction($id, Request $request, AuthorizationCheckerInterface $authorizationChecker)
+    /*
+     * Muestra un formulario con los datos del usuario a editar siempre y cuando se haya logado.
+     * La ruta esta en routes.yaml
+     * @param Request $request, $id Id de usuario.
+     * @return Render view     
+     */
+    public function editarAction($id, Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        //$access1 = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
-        // $access2 = $authorizationChecker->isGranted(new Expression(
-        //     'is_remember_me() or is_fully_authenticated()'
-        // ));
 
         $userEdit = $this->getDoctrine()->getRepository(User::class)->find($id);
         $mensaje = '';
@@ -110,7 +75,6 @@ class AppController extends AbstractController
             ->add('usernamecanonical', TextType::class)
             ->add('email', TextType::class)
             ->add('emailcanonical', TextType::class)
-            // ->add('enabled', NumberType::class)
             ->add('enabled', ChoiceType::class, [
                 'choices'  => [
                     'Yes' => true,
@@ -138,54 +102,22 @@ class AppController extends AbstractController
         ));
 
 
-        // $userRepository = $this->getDoctrine()->getRepository(User::class);
-        // $users = $userRepository->getAllUsers(0, 50);
-        
-        // $userEdit = $this->getDoctrine()->getRepository(User::class)->find($id);
-
-        // $user = $this->getUser();
-
-        // return $this->render('app/listado.html.twig', [
-        //             'users' => $users
-        //         ]);
-
     }
 
-    public function borrarAction($id, Request $request, AuthorizationCheckerInterface $authorizationChecker)
+    /*
+     * Eliminar un usuario siempre y cuando se haya logado.
+     * La ruta esta en routes.yaml
+     * @param Request $request, $id Id de usuario.
+     * @return Render view     
+     */
+    public function borrarAction($id, Request $request)
     {   
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        // $userManager = $container->get('fos_user.user_manager');
-
-        // $user = $userManager->createUser();
-        // $user->setUsername('John');
-        // $user->setEmail('john.doe@example.com');
-
-        // $userManager->updateUser($user);
-
         $userDelete = $this->getDoctrine()->getRepository(User::class)->find($id);
         $m = $this->getDoctrine()->getManager();
         $m->remove($userDelete);
         $m->flush();
-   
-        // $this->objectManager->remove($user);
-        // $this->objectManager->flush();
-    
-
-
         
-
-        $user = $this->getUser();
-         // echo '<pre>'; print_r($user); echo '</pre>';
-// die();
-
-        $access1 = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
-    // echo "string ".$access1;
-
-    // $access2 = $authorizationChecker->isGranted(new Expression(
-    //     'is_remember_me() or is_fully_authenticated()'
-    // ));
-
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $users = $userRepository->getAllUsers(0, 50);
 
@@ -194,11 +126,5 @@ class AppController extends AbstractController
                 ]);
 
     }
-
-    public function registrarAction()
-    {  
-        return $this->render('app/registrar.html.twig');
-    }
-
 
 }

@@ -2,95 +2,76 @@
 
 {% block title %}Listado HMG{% endblock %}
 {% block stylesheets %}
-    {# {{ parent() }} #}
     {{ include('app/includes/css_includes.html.twig') }}
-<style type="text/css">
-.loader {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    background: url('{{ asset('assets/img/loader.gif') }}') 50% 50% no-repeat rgb(249,249,249);
-    opacity: .8;
-}       
-</style>
+
 {% endblock %}
 {% block body %}
     <div class="loader"></div>
 
-
     {{ include('app/modules/navbar.html.twig') }}
     {{ include('app/modules/header.html.twig') }}
 
-{#   <script src="{{ asset('libs/datatables/Responsive-2.2.2/css/responsive.bootstrap4.min.css') }}"></script>
-   <script src="{{ asset('libs/bootstrap-all/bootstrap.css') }}"></script>
-    <script src="{{ asset('libs/datatables/Responsive-2.2.2/css/responsive.bootstrap4.min.css') }}"></script>
-    <script src="{{ asset('libs/datatables/Responsive-2.2.2/css/responsive.bootstrap4.min.css') }}"></script>
-#}
-
-<div class="container" style="padding-top: 50px; padding-bottom: 50px">
-    <div class="text-center"><h2>LISTADO DE USUARIOS</h2></div>
+    <div class="container" style="padding-top: 50px; padding-bottom: 50px">
+        <div class="text-center"><h2>LISTADO DE USUARIOS</h2></div>
     
-    <div class="row options" id="options">
-        <div class="table-responsive" style="font-size: 0.9rem;">
-            <table id="tabla" class="table disp table-striped table-bordered dt-responsive nowrap compact" style="width:100%;">
-                <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">OPTIONS</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Enable</th>
-                    <th scope="col">Salt</th>
-                    <th scope="col">Password</th>
-                    <th scope="col">PlainPassword</th>                    
-                    <th scope="col">ConfirmationToken</th>
-                    <th scope="col">PasswordRequestedAt</th>
-                    <th scope="col">Role</th>
+        <div class="row options" id="options">
+            <div class="table-responsive" style="font-size: 0.9rem;">
+                <table id="tabla" class="table disp table-striped table-bordered dt-responsive nowrap compact" style="width:100%;">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">OPTIONS</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Enable</th>
+                        <th scope="col">Salt</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">PlainPassword</th>                    
+                        <th scope="col">ConfirmationToken</th>
+                        <th scope="col">PasswordRequestedAt</th>
+                        <th scope="col">Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td><strong>{{ user.id|e }}</strong></td>
+                                <td>
+                                    <div class="text-center">
+                                        <a href="{{ path('editar', {'id': user.id|e}) }}">
+                                            <button class="btn"><i class="fas fa-pencil-alt"></i></button>
+                                        </a>
+                                        <a href="#" class="borrar" id='{{ user.id|e }}'>               
+                                            <button class="btn" data-toggle="modal" data-target="#myModal"><i class="fas fa-trash-alt" style='color:red;margin-left:10px '></i> </button>  
+                                        </a>  
+                                        <a href="/register/">       
+                                            <button class="btn"><i class="fas fa-plus" style='color:green;margin-left:10px '></i> </button>  
+                                        </a>                                          
+                                    </div>                              
+                                </td>
+                                <td>{{ user.username|e }}</td>
+                                <td>{{ user.email|e }}</td>
+                                {% if user.enabled == 1 %}
+                                   {% set enabled = 'Yes' %} 
+                                {% else %}  
+                                    {% set enabled = 'No' %}          
+                                {% endif %}                            
+                                <td>{{ enabled|e }}</td>
+                                <td>{{ user.salt|e }}</td>
+                                <td>{{ user.password|e }}</td>
+                                <td>{{ user.plainPassword|e }}</td>
+                                {# <td>{{ user.lastLogin.date|e }}</td> #}
+                                <td>{{ user.confirmationToken|e }}</td>
+                                <td>{{ user.passwordRequestedAt|e }}</td>
+                                <td>{{ user.roles[0]|e }}</td>
+                            </tr>
+                        {% endfor %}                    
 
-                </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                        <tr>
-                            <td><strong>{{ user.id|e }}</strong></td>
-                            <td>
-                                <div class="text-center">
-                                    {# <a href="editar/{{ user.id|e }}"> #}
-                                    <a href="{{ path('editar', {'id': user.id|e}) }}">
-                                        <button class="btn"><i class="fas fa-pencil-alt"></i></button>
-                                    </a>
-                                    <a href="#" class="borrar" id='{{ user.id|e }}'>          {#  {{ path('borrar', {'id': user.id|e}) }}   #}                     
-                                        <button class="btn" data-toggle="modal" data-target="#myModal"><i class="fas fa-trash-alt" style='color:red;margin-left:10px '></i> </button>  
-                                    </a>  
-                                    <a href="/register/">       
-                                        <button class="btn"><i class="fas fa-plus" style='color:green;margin-left:10px '></i> </button>  
-                                    </a>                                          
-                                </div>                              
-                            </td>
-                            <td>{{ user.username|e }}</td>
-
-                            {# <td>{{ user.usernameCanonical|e }}</td> #}
-                            <td>{{ user.email|e }}</td>
-                            {# <td>{{ user.emailCanonical|e }}</td> #}
-                            <td>{{ user.enabled|e }}</td>
-                            <td>{{ user.salt|e }}</td>
-                            <td>{{ user.password|e }}</td>
-                            <td>{{ user.plainPassword|e }}</td>
-                            {# <td>{{ user.lastLogin.date|e }}</td> #}
-                            <td>{{ user.confirmationToken|e }}</td>
-                            <td>{{ user.passwordRequestedAt|e }}</td>
-                            <td>{{ user.roles[0]|e }}</td>
-                        </tr>
-                    {% endfor %}                    
-
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- The Modal -->
     <div class="modal" id="myModal">
@@ -121,22 +102,8 @@
 
     {{ include('app/modules/contact.html.twig') }}
     {{ include('app/modules/footer.html.twig') }}
-
-
     {{ include('app/includes/js_includes.html.twig') }} 
     <script src="{{ asset('libs/datatables/datatables.min.js') }}"></script>
-    <script>
-
-        if (typeof id !== 'undefined') { let id; }    
-        $( ".borrar" ).click(function(e) {
-            id = $(this).attr('id');
-            $('#mensaje-modal').html('¿Está seguro que quiere eliminar el usuario con id '+id+'?');
-            $( ".aceptar-borrado" ).click(function() {
-                window.location.href = "/oauth/v2/auth/borrar/"+id;
-            });
-        });    
-    </script>
-
     <script>
    
     var table = '';
@@ -144,7 +111,7 @@
         if(table == ''){
 
 table = $('#tabla').DataTable({
-            order: [[ 3, "desc" ]],
+            order: [[ 0, "desc" ]],
             responsive: true,
             language: {
                 sProcessing:     "Procesando...",

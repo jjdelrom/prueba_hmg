@@ -2,23 +2,16 @@
 
 {% block title %}Editar HMG{% endblock %}
 {% block stylesheets %}
-    {# {{ parent() }} #}
     {{ include('app/includes/css_includes.html.twig') }}
-
 {% endblock %}
 {% block body %}
 
     {{ include('app/modules/navbar.html.twig') }}
     {{ include('app/modules/header.html.twig') }}
-    {# {{ include('app/modules/options.html.twig') }} #}
-{# 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-    {{ form_end(form) }} #}
 
     <div class="container">
         <div class="row" style="padding-top: 50px;">
-            <div class="col-md-12 "> {# col-md-offset-2 #}
+            <div class="col-md-12 ">
                 {% if mensaje %}
                     <div class="alert alert-success" role="alert">
                       <a href="#" class="alert-link">{{ mensaje }}</a>
@@ -53,22 +46,16 @@
                             {{ form_widget(form.enabled, { 'attr': {'class': 'form-control'} }) }}
                             <span class="text-danger">{{ form_errors(form.enabled)}}</span>
                         </div>                                                                    
-{#                         <div class="form-group">
-                            {{ form_label(form.telefono)}}
-                             {{ form_widget(form.telefono, { 'attr': {'class': 'form-control'} }) }}
-                            <span class="text-danger">{{ form_errors(form.telefono)}}</span>
-                        </div> #}
-                    <!--  Aceptar y Reset en la misma línea  -->
-                    <div class="btn-toolbar" role="toolbar">
-                      <div class="btn-group">
-                        <div class="btn pull-left">
-                             {{ form_widget(form.save)}}
-                            <span class="text-danger">{{ form_errors(form)}}</span>
+
+                        <div class="btn-toolbar" role="toolbar">
+                          <div class="btn-group">
+                            <div class="btn pull-left">
+                                 {{ form_widget(form.save)}}
+                                <span class="text-danger">{{ form_errors(form)}}</span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div><!-- # FIN Aceptar y Reset -->
-                        {{ form_end(form) }}
-                <!--}-->
+                            {{ form_end(form) }}
                     </div>
                 </div>
             </div>
@@ -77,8 +64,6 @@
 
     {{ include('app/modules/contact.html.twig') }}
     {{ include('app/modules/footer.html.twig') }}
-
-
     {{ include('app/includes/js_includes.html.twig') }} 
 
 {% endblock %}

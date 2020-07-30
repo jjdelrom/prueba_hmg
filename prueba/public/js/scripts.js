@@ -66,9 +66,12 @@
     });
   
   })(jQuery); // End of use strict
-  
-// $( document ).ready(function() {
-//   $( "#listado" ).click(function() {
-//     alert("s");
-//   });
-// });
+
+  $( ".borrar" ).click(function(e) {
+      id = $(this).attr('id');
+      $('#mensaje-modal').html('¿Está seguro que quiere eliminar el usuario con id '+id+'?');
+      $( ".aceptar-borrado" ).click(function() {
+          window.location.href = "/oauth/v2/auth/borrar/"+id;
+      });
+  });  
+

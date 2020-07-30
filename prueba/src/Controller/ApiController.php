@@ -181,7 +181,7 @@ class ApiController extends FOSRestController
                 $user->setEmail($email);
                 $user->setEmailCanonical($email);
                 $user->setEnabled($enabled);
-                $user->setRoles($roles);
+                $user->setRoles((array)$roles);
 
                 $em->persist($user);
                 $em->flush();
