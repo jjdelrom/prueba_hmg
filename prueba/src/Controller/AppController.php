@@ -19,7 +19,8 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\{TextType,ButtonType,EmailType,HiddenType,PasswordType,TextareaType,SubmitType,NumberType,DateType,MoneyType,BirthdayType,ChoiceType};
-
+// use Symfony\Component\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpClient\HttpClient;
 
 class AppController extends AbstractController
 {
@@ -72,9 +73,7 @@ class AppController extends AbstractController
         $mensaje = '';
         $form = $this->createFormBuilder($userEdit)
             ->add('username', TextType::class)
-            ->add('usernamecanonical', TextType::class)
             ->add('email', TextType::class)
-            ->add('emailcanonical', TextType::class)
             ->add('enabled', ChoiceType::class, [
                 'choices'  => [
                     'Yes' => true,

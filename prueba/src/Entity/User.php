@@ -23,18 +23,22 @@ class User extends BaseUser
     {
         parent::__construct();
     }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }   
-
-    public function getCommentary(): ?String
-    {
-        return $this->commentary;
-    }    
+ 
+    /**
+     * {@inheritdoc}
+     */
     public function setCommentary($commentary)
     {
         $this->commentary = $commentary;
-    }       
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCommentary()
+    {
+        return $this->commentary;
+    }         
 }

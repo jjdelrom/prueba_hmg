@@ -2,6 +2,11 @@ index:
    path: /
    controller: App\Controller\AppController::indexAction
 
+# Prueba para Oauth
+redirect-uri-example:
+   path: /redirect-uri-example
+   controller: App\Controller\AppController::indexAction
+
 editar:
    path: /oauth/v2/auth/editar/{id}
    controller: App\Controller\AppController::editarAction
